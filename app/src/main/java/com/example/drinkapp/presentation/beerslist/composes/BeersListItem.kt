@@ -20,6 +20,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.imageLoader
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.drinkapp.domain.models.Drink
 
@@ -52,7 +54,10 @@ fun BeersListItem(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(beer.thumbUrl)
                         .crossfade(true)
+                        .diskCachePolicy(CachePolicy.ENABLED)
+                        .memoryCachePolicy(CachePolicy.ENABLED)
                         .build(),
+                    imageLoader = LocalContext.current.imageLoader,
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
