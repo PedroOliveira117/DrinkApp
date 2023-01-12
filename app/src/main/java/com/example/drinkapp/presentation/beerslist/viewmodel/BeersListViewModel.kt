@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.drinkapp.data.repository.DrinksRepository
+import com.example.drinkapp.domain.repository.IDrinksRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +16,7 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class BeersListViewModel @Inject constructor(private val repository: DrinksRepository) : ViewModel() {
+class BeersListViewModel @Inject constructor(private val repository: IDrinksRepository) : ViewModel() {
 
     var beersListState by mutableStateOf(BeersListState())
     private val perPage = 24
