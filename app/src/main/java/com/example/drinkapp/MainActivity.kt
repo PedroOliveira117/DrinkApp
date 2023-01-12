@@ -3,13 +3,15 @@ package com.example.drinkapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.drinkapp.presentation.beerslist.bottomnavigation.BottomBar
+import com.example.drinkapp.presentation.beerslist.bottomnavigation.BottomBarScreen
+import com.example.drinkapp.presentation.beerslist.composes.BeersListScreen
 import com.example.drinkapp.ui.theme.DrinkAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,24 +21,27 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DrinkAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+                val navController = rememberNavController()
+                Scaffold(
+                    bottomBar = {
+                        BottomBar(navController = navController)
+                    }) { padding ->
+                    NavHost(
+                        navController = navController,
+                        startDestination = BottomBarScreen.Home.route,
+                        modifier = Modifier.padding(padding)
+                    ) {
+
+                        composable(route = BottomBarScreen.Home.route) {
+                            BeersListScreen()
+                        }
+
+                        composable(route = BottomBarScreen.Search.route) {
+                            // TODO Addes Search Screen
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    DrinkAppTheme {
-        Greeting("Android")
     }
 }

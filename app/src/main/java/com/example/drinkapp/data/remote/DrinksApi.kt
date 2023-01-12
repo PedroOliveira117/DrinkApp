@@ -1,8 +1,11 @@
 package com.example.drinkapp.data.remote
 
 import com.example.drinkapp.common.ApiConstants
+import com.example.drinkapp.common.ApiConstants.API_QUERY_PAGE
+import com.example.drinkapp.common.ApiConstants.API_QUERY_PER_PAGE
 import com.example.drinkapp.domain.models.Drink
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 /**
  * Created by pedrooliveira on 10/01/2023
@@ -11,5 +14,5 @@ import retrofit2.http.GET
 interface DrinksApi {
 
     @GET(ApiConstants.API_GET_BEERS)
-    suspend fun getBeers(): ArrayList<Drink>
+    suspend fun getBeers(@Query(API_QUERY_PAGE) page: Int, @Query(API_QUERY_PER_PAGE) perPage: Int): List<Drink>
 }

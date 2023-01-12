@@ -12,9 +12,9 @@ import javax.inject.Inject
  */
 class DrinksRepository @Inject constructor(private val api: DrinksApi) : IDrinksRepository {
 
-    override suspend fun getBeers(): Resource<ArrayList<Drink>> {
+    override suspend fun getBeers(page: Int, perPage: Int): Resource<List<Drink>> {
         val response = try {
-            api.getBeers()
+            api.getBeers(page, perPage)
         } catch (e: Exception) {
             return Resource.Error(message = "Error while getting drinks")
         }

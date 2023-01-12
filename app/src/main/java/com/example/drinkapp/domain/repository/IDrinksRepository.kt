@@ -9,5 +9,5 @@ import com.example.drinkapp.domain.models.Drink
  */
 interface IDrinksRepository {
 
-    suspend fun getBeers(): Resource<ArrayList<Drink>>
+    suspend fun getBeers(page: Int, perPage: Int): Resource<List<Drink>>
 }
