@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.drinkapp.presentation.beerslist.bottomnavigation.BottomBar
-import com.example.drinkapp.presentation.beerslist.bottomnavigation.BottomBarScreen
-import com.example.drinkapp.presentation.beerslist.composes.BeersListScreen
+import com.example.drinkapp.presentation.drinkslist.bottomnavigation.BottomBar
+import com.example.drinkapp.presentation.drinkslist.bottomnavigation.BottomBarScreen
+import com.example.drinkapp.presentation.drinkslist.composes.DrinksListScreen
 import com.example.drinkapp.ui.theme.DrinkAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
                     ) {
 
                         composable(route = BottomBarScreen.Home.route) {
-                            BeersListScreen()
+                            DrinksListScreen()
                         }
 
                         composable(route = BottomBarScreen.Search.route) {

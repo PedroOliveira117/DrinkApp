@@ -14,12 +14,12 @@ import javax.inject.Inject
  */
 class DrinksRepository @Inject constructor(private val api: DrinksApi, private val dataBase: DrinksDataBase) : IDrinksRepository {
 
-    override suspend fun getBeers(page: Int, perPage: Int): Resource<List<Drink>> {
+    override suspend fun getDrinks(page: Int, perPage: Int): Resource<List<Drink>> {
         val response = try {
-            api.getBeers(page, perPage)
+            api.getDrinks(page, perPage)
         } catch (e: Exception) {
             // If fails get Drinks from cache
-            return Resource.Error(message = "Error while getting drinks", data = dataBase.drinkDao().getBeers(page - 1, perPage).map { it.toDrink() })
+            return Resource.Error(message = "Error while getting drinks", data = dataBase.drinkDao().getDrinks(page - 1, perPage).map { it.toDrink() })
         }
         // Save Drinks In cache
         dataBase.drinkDao().insertDrink(response)

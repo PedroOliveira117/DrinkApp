@@ -1,4 +1,4 @@
-package com.example.drinkapp.presentation.beerslist.composes
+package com.example.drinkapp.presentation.drinkslist.composes
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,8 +30,8 @@ import com.example.drinkapp.domain.models.Drink
  * All rights reserved GoodBarber
  */
 @Composable
-fun BeersListItem(
-    beer: Drink,
+fun DrinkListItem(
+    drink: Drink,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -52,7 +52,7 @@ fun BeersListItem(
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(beer.thumbUrl)
+                        .data(drink.thumbUrl)
                         .crossfade(true)
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .memoryCachePolicy(CachePolicy.ENABLED)
@@ -65,7 +65,7 @@ fun BeersListItem(
                 )
                 Box(modifier = Modifier.fillMaxSize()) {
                     Text(
-                        text = beer.name,
+                        text = drink.name,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 20.sp,

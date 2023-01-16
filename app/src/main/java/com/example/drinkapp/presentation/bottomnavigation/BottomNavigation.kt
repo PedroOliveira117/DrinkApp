@@ -1,4 +1,4 @@
-package com.example.drinkapp.presentation.beerslist.bottomnavigation
+package com.example.drinkapp.presentation.drinkslist.bottomnavigation
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigation
@@ -16,8 +16,8 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.drinkapp.common.navigation.NavigationUtils.BEERS_LIST_SCREEN
-import com.example.drinkapp.common.navigation.NavigationUtils.SEARCH_BEERS_LIST_SCREEN
+import com.example.drinkapp.common.navigation.NavigationUtils.DRINKS_LIST_SCREEN
+import com.example.drinkapp.common.navigation.NavigationUtils.SEARCH_DRINKS_LIST_SCREEN
 
 /**
  * Created by pedrooliveira on 11/01/2023
@@ -30,13 +30,13 @@ sealed class BottomBarScreen(
     val icon: ImageVector
 ) {
     object Home : BottomBarScreen(
-        route = BEERS_LIST_SCREEN,
+        route = DRINKS_LIST_SCREEN,
         title = "Home",
         icon = Icons.Default.Home
     )
 
     object Search : BottomBarScreen(
-        route = SEARCH_BEERS_LIST_SCREEN,
+        route = SEARCH_DRINKS_LIST_SCREEN,
         title = "Search",
         icon = Icons.Default.Search
     )

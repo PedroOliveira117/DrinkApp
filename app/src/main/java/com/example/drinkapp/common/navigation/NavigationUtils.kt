@@ -6,6 +6,6 @@ package com.example.drinkapp.common.navigation
  */
 object NavigationUtils {
 
-    const val BEERS_LIST_SCREEN = "beers_list_screen"
-    const val SEARCH_BEERS_LIST_SCREEN = "beers_search_screen"
+    const val DRINKS_LIST_SCREEN = "drinks_list_screen"
+    const val SEARCH_DRINKS_LIST_SCREEN = "drinks_search_screen"
 }

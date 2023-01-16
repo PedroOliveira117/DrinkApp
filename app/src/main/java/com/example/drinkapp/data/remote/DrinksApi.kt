@@ -4,7 +4,6 @@ import com.example.drinkapp.common.ApiConstants
 import com.example.drinkapp.common.ApiConstants.API_QUERY_PAGE
 import com.example.drinkapp.common.ApiConstants.API_QUERY_PER_PAGE
 import com.example.drinkapp.data.models.DrinkDto
-import com.example.drinkapp.domain.models.Drink
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -14,6 +13,6 @@ import retrofit2.http.Query
  */
 interface DrinksApi {
 
-    @GET(ApiConstants.API_GET_BEERS)
-    suspend fun getBeers(@Query(API_QUERY_PAGE) page: Int, @Query(API_QUERY_PER_PAGE) perPage: Int): List<DrinkDto>
+    @GET(ApiConstants.API_GET_DRINKS)
+    suspend fun getDrinks(@Query(API_QUERY_PAGE) page: Int, @Query(API_QUERY_PER_PAGE) perPage: Int): List<DrinkDto>
 }
