@@ -2,6 +2,7 @@ package com.example.drinkapp.data.repository
 
 import com.example.drinkapp.common.Resource
 import com.example.drinkapp.data.local.DrinksDataBase
+import com.example.drinkapp.data.models.toDrink
 import com.example.drinkapp.data.remote.DrinksApi
 import com.example.drinkapp.domain.models.Drink
 import com.example.drinkapp.domain.repository.IDrinksRepository
@@ -18,10 +19,11 @@ class DrinksRepository @Inject constructor(private val api: DrinksApi, private v
             api.getBeers(page, perPage)
         } catch (e: Exception) {
             // If fails get Drinks from cache
-            return Resource.Error(message = "Error while getting drinks", data = dataBase.drinkDao().getBeers(page - 1, perPage))
+            return Resource.Error(message = "Error while getting drinks", data = dataBase.drinkDao().getBeers(page - 1, perPage).map { it.toDrink() })
         }
         // Save Drinks In cache
         dataBase.drinkDao().insertDrink(response)
-        return Resource.Success(data = response)
+
+        return Resource.Success(data = response.map { it.toDrink() })
     }
 }
