@@ -26,14 +26,14 @@ fun DrinksListScreen(
     viewModel: DrinksListViewModel = hiltViewModel()
 ) {
     Scaffold(modifier = modifier.fillMaxSize()) {
-        if (viewModel.drinksListState.isLoading && viewModel.drinksListState.drinksList.isEmpty()) {
+        if (viewModel.state.isLoading && viewModel.state.drinksList.isEmpty()) {
             LoadingIndicator(Modifier.fillMaxSize())
         } else {
             LazyVerticalGrid(
                 cells = GridCells.Fixed(2),
             ) {
-                val itemsCount = viewModel.drinksListState.drinksList.size
-                viewModel.drinksListState.apply {
+                val itemsCount = viewModel.state.drinksList.size
+                viewModel.state.apply {
                     items(itemsCount) { index ->
                         // When reaching last Item Trigger next Page Event
                         if (index >= (itemsCount - 1)) {

@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -69,6 +70,7 @@ fun DrinkListItem(
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 20.sp,
+                        fontWeight = FontWeight(700),
                         color = Color.White,
                         textAlign = TextAlign.Center,
                         modifier = Modifier

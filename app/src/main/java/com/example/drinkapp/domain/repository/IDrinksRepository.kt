@@ -10,4 +10,6 @@ import com.example.drinkapp.domain.models.Drink
 interface IDrinksRepository {
 
     suspend fun getDrinks(page: Int, perPage: Int): Resource<List<Drink>>
+
+    suspend fun searchDrink(keyword: String, page: Int, perPage: Int): Resource<List<Drink>>
 }

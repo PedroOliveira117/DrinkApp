@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DrinksListViewModel @Inject constructor(private val repository: IDrinksRepository) : ViewModel() {
 
-    var drinksListState by mutableStateOf(DrinksListState())
+    var state by mutableStateOf(DrinksListState())
     private val perPage = 24
 
     init {
@@ -28,24 +28,24 @@ class DrinksListViewModel @Inject constructor(private val repository: IDrinksRep
     fun onTriggerEvent(event: DrinksListEvent) {
         when (event) {
             DrinksListEvent.NewSearchEvent -> getDrinks()
-            DrinksListEvent.NextPageEvent -> getDrinks(drinksListState.page)
+            DrinksListEvent.NextPageEvent -> getDrinks(state.page)
         }
     }
 
     private fun getDrinks(page: Int = 1) {
-        drinksListState = drinksListState.copy(isLoading = true)
+        state = state.copy(isLoading = true)
         viewModelScope.launch {
             val response = repository.getDrinks(page, perPage)
             response.data?.let { list ->
                 when {
                     list.isNotEmpty() -> {
-                        drinksListState = drinksListState.copy(drinksList = drinksListState.drinksList + list, page = drinksListState.page + 1)
+                        state = state.copy(drinksList = state.drinksList + list, page = state.page + 1)
                     }
-                    drinksListState.isLoading -> drinksListState = drinksListState.copy(isLoading = false)
+                    state.isLoading -> state = state.copy(isLoading = false)
                 }
             } ?: kotlin.run {
-                if (drinksListState.isLoading) {
-                    drinksListState = drinksListState.copy(isLoading = false)
+                if (state.isLoading) {
+                    state = state.copy(isLoading = false)
                 }
             }
         }

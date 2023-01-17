@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.drinkapp.presentation.drinksearch.composes.DrinkSearchScreen
 import com.example.drinkapp.presentation.drinkslist.bottomnavigation.BottomBar
 import com.example.drinkapp.presentation.drinkslist.bottomnavigation.BottomBarScreen
 import com.example.drinkapp.presentation.drinkslist.composes.DrinksListScreen
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(route = BottomBarScreen.Search.route) {
-                            // TODO Addes Search Screen
+                            DrinkSearchScreen()
                         }
                     }
                 }

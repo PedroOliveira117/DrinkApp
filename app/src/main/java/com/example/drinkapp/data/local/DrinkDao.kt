@@ -16,6 +16,9 @@ interface DrinkDao {
     @Query("SELECT * FROM drink_database ORDER BY CAST(id as INT) ASC LIMIT :perPage OFFSET :page * :perPage")
     suspend fun getDrinks(page: Int, perPage: Int): List<DrinkDto>
 
+    @Query("SELECT * FROM drink_database WHERE name LIKE '%' || :keyword || '%' ORDER BY CAST(id as INT) ASC LIMIT :perPage OFFSET :page * :perPage")
+    suspend fun searchDrink(keyword: String, page: Int, perPage: Int): List<DrinkDto>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDrink(drink: List<DrinkDto>)
 }

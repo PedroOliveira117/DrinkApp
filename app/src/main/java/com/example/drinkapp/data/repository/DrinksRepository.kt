@@ -26,4 +26,20 @@ class DrinksRepository @Inject constructor(private val api: DrinksApi, private v
 
         return Resource.Success(data = response.map { it.toDrink() })
     }
+
+    override suspend fun searchDrink(keyword: String, page: Int, perPage: Int): Resource<List<Drink>> {
+        val response = try {
+            api.searchDrink(keyword = keyword, page = page, perPage = perPage)
+        } catch (e: Exception) {
+            // If fails search Drink in cache
+            return Resource.Error(message = "Error while searching for drink $keyword", data = dataBase.drinkDao().searchDrink(
+                keyword = keyword,
+                page = page - 1,
+                perPage = perPage
+            ).map {
+                it.toDrink()
+            })
+        }
+        return Resource.Success(data = response.map { it.toDrink() })
+    }
 }
