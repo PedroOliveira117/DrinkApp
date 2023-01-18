@@ -27,6 +27,16 @@ class DrinksRepository @Inject constructor(private val api: DrinksApi, private v
         return Resource.Success(data = response.map { it.toDrink() })
     }
 
+    override suspend fun getDrinkById(id: String): Resource<Drink> {
+        val response = try {
+            api.getDrinkById(drinkId = id)
+        } catch (e: Exception) {
+            // If fails get Drink from cache
+            return Resource.Error(message = "Error while getting drink with id: $e", data = dataBase.drinkDao().getDrinkById(drinkId = id).toDrink())
+        }
+        return Resource.Success(data = response.first().toDrink())
+    }
+
     override suspend fun searchDrink(keyword: String, page: Int, perPage: Int): Resource<List<Drink>> {
         val response = try {
             api.searchDrink(keyword = keyword, page = page, perPage = perPage)

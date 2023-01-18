@@ -13,5 +13,7 @@ data class Drink(
     val description: String,
     val brewedDate: String,
     val brewersTips: String,
-    val ph: Float
+    val ph: Float,
+    val volume: Measure,
+    val foodMatches: List<String> = emptyList()
 )

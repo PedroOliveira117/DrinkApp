@@ -10,6 +10,7 @@ object ApiConstants {
 
     const val API_GET_DRINKS = "beers?"
     const val API_QUERY_BEER_NAME = "beer_name"
+    const val API_QUERY_BEER_ID = "ids"
     const val API_QUERY_PAGE = "page"
     const val API_QUERY_PER_PAGE = "per_page"
 }

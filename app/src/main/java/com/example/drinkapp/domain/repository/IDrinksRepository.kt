@@ -11,5 +11,7 @@ interface IDrinksRepository {
 
     suspend fun getDrinks(page: Int, perPage: Int): Resource<List<Drink>>
 
+    suspend fun getDrinkById(id: String): Resource<Drink>
+
     suspend fun searchDrink(keyword: String, page: Int, perPage: Int): Resource<List<Drink>>
 }

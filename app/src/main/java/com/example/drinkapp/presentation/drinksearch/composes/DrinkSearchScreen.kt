@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.drinkapp.common.composes.LoadingIndicator
 import com.example.drinkapp.presentation.drinksearch.viewmodel.DrinkSearchEvent
 import com.example.drinkapp.presentation.drinksearch.viewmodel.DrinkSearchViewModel
@@ -29,12 +29,13 @@ import com.example.drinkapp.presentation.drinksearch.viewmodel.DrinkSearchViewMo
  */
 @Composable
 fun DrinkSearchScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: DrinkSearchViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
 
-    Scaffold(
+    Box(
         modifier = modifier.fillMaxSize()
     ) {
         Column(
@@ -100,7 +101,10 @@ fun DrinkSearchScreen(
                                     viewModel.onTriggerEvent(DrinkSearchEvent.NextPageEvent)
                                 }
                             }
-                            DrinkSearchItem(state.drinksList[index])
+                            DrinkSearchItem(
+                                navController = navController,
+                                drink = state.drinksList[index]
+                            )
                         }
 
                         if (state.isLoading && state.page > 1) {

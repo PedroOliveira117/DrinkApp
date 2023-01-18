@@ -5,11 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.GridItemSpan
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.drinkapp.common.composes.LoadingIndicator
 import com.example.drinkapp.presentation.drinkslist.viewmodel.DrinksListEvent
 import com.example.drinkapp.presentation.drinkslist.viewmodel.DrinksListViewModel
@@ -22,10 +22,11 @@ import com.example.drinkapp.presentation.drinkslist.viewmodel.DrinksListViewMode
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DrinksListScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: DrinksListViewModel = hiltViewModel()
 ) {
-    Scaffold(modifier = modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         if (viewModel.state.isLoading && viewModel.state.drinksList.isEmpty()) {
             LoadingIndicator(Modifier.fillMaxSize())
         } else {
@@ -41,7 +42,10 @@ fun DrinksListScreen(
                                 viewModel.onTriggerEvent(DrinksListEvent.NextPageEvent)
                             }
                         }
-                        DrinkListItem(drinksList[index])
+                        DrinkListItem(
+                            navController = navController,
+                            drink = drinksList[index]
+                        )
                     }
                     // If is Loading Display loading at bottom for load more
                     if (isLoading) {

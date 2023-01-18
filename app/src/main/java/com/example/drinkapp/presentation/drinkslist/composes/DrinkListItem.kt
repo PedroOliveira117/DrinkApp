@@ -1,5 +1,6 @@
 package com.example.drinkapp.presentation.drinkslist.composes
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -20,10 +21,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.example.drinkapp.common.navigation.NavigationUtils.navigateToDrinkDetail
 import com.example.drinkapp.domain.models.Drink
 
 /**
@@ -32,6 +35,7 @@ import com.example.drinkapp.domain.models.Drink
  */
 @Composable
 fun DrinkListItem(
+    navController: NavController,
     drink: Drink,
     modifier: Modifier = Modifier
 ) {
@@ -40,6 +44,9 @@ fun DrinkListItem(
         shape = RoundedCornerShape(10.dp),
         modifier = modifier
             .padding(vertical = 8.dp, horizontal = 8.dp)
+            .clickable {
+                navController.navigateToDrinkDetail(drinkId = drink.id)
+            }
             .shadow(5.dp, RoundedCornerShape(10.dp))
             .height(300.dp)
     ) {

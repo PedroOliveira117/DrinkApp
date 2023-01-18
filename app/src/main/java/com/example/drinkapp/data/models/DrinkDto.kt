@@ -1,8 +1,8 @@
 package com.example.drinkapp.data.models
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.example.drinkapp.domain.models.Drink
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName
  * All rights reserved GoodBarber
  */
 @Entity(tableName = "drink_database")
+@TypeConverters(Converters::class)
 data class DrinkDto(
     @PrimaryKey
     val id: String,
@@ -23,7 +24,12 @@ data class DrinkDto(
     val brewedDate: String,
     @SerializedName("brewers_tips")
     val brewersTips: String,
-    val ph: Float
+    val ph: Float,
+    @Embedded
+    val volume: MeasureDto,
+    @SerializedName("food_pairing")
+    @ColumnInfo(name = "food_pairing")
+    val foodMatches: List<String>
 )
 
 fun DrinkDto.toDrink(): Drink {
@@ -35,6 +41,17 @@ fun DrinkDto.toDrink(): Drink {
         description = description,
         brewedDate = brewedDate,
         brewersTips = brewersTips,
-        ph = ph
+        ph = ph,
+        volume = volume.toMeasure(),
+        foodMatches = foodMatches
     )
+}
+
+class Converters {
+
+    @TypeConverter
+    fun listToJson(value: List<String>?) = Gson().toJson(value)
+
+    @TypeConverter
+    fun jsonToList(value: String) = Gson().fromJson(value, Array<String>::class.java).toList()
 }

@@ -34,5 +34,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDrinksDataBase(drinkApplication: Application) = Room.databaseBuilder(drinkApplication, DrinksDataBase::class.java, "drink_database").fallbackToDestructiveMigration().build()
+    fun provideDrinksDataBase(drinkApplication: Application) = Room
+        .databaseBuilder(drinkApplication, DrinksDataBase::class.java, "drink_database").
+        fallbackToDestructiveMigration()
+        .build()
 }

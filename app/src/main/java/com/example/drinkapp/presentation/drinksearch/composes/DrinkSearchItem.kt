@@ -1,6 +1,7 @@
 package com.example.drinkapp.presentation.drinksearch.composes
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -15,14 +16,17 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.example.drinkapp.common.navigation.NavigationUtils.navigateToDrinkDetail
 import com.example.drinkapp.domain.models.Drink
 
 /**
@@ -31,6 +35,7 @@ import com.example.drinkapp.domain.models.Drink
  */
 @Composable
 fun DrinkSearchItem(
+    navController: NavController,
     drink: Drink,
     modifier: Modifier = Modifier
 ) {
@@ -40,6 +45,9 @@ fun DrinkSearchItem(
             .shadow(5.dp, shape = RoundedCornerShape(10.dp))
             .background(color = Color.Gray)
             .padding(10.dp)
+            .clickable {
+                navController.navigateToDrinkDetail(drinkId = drink.id)
+            }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -80,6 +88,7 @@ fun DrinkSearchItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 14.sp,
+                    fontStyle = FontStyle.Italic,
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(5.dp))
