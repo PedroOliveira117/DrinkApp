@@ -3,13 +3,17 @@ package com.example.drinkapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -41,19 +45,29 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     bottomBar = {
-                        if (displayBottomBar) {
+                        AnimatedVisibility(
+                            enter = slideInVertically(initialOffsetY = { it }),
+                            exit = slideOutVertically(targetOffsetY = { it }),
+                            visible = displayBottomBar
+                        ) {
                             BottomBar(navController = navController)
                         }
                     }
                 ) { padding ->
                     NavHost(
                         navController = navController,
-                        startDestination = BottomBarScreen.Home.route,
-                        modifier = Modifier.padding(padding)
+                        startDestination = BottomBarScreen.Home.route
                     ) {
 
                         composable(route = BottomBarScreen.Home.route) {
-                            DrinksListScreen(navController)
+                            DrinksListScreen(
+                                contentPadding = padding,
+                                navController = navController
+                            )
+                        }
+
+                        composable(route = BottomBarScreen.Favorites.route) {
+                            DrinkSearchScreen(navController)
                         }
 
                         composable(route = BottomBarScreen.Search.route) {
@@ -65,10 +79,10 @@ class MainActivity : ComponentActivity() {
                             arguments = listOf(
                                 navArgument("drinkId") {
                                     type = NavType.StringType
-                                }
-                            )
+                                },
+                            ),
                         ) {
-                            DrinkDetailScreen()
+                            DrinkDetailScreen(navController = navController)
                         }
                     }
                 }

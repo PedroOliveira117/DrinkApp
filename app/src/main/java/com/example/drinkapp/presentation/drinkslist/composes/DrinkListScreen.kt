@@ -1,6 +1,7 @@
 package com.example.drinkapp.presentation.drinkslist.composes
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.GridItemSpan
@@ -13,6 +14,7 @@ import androidx.navigation.NavController
 import com.example.drinkapp.common.composes.LoadingIndicator
 import com.example.drinkapp.presentation.drinkslist.viewmodel.DrinksListEvent
 import com.example.drinkapp.presentation.drinkslist.viewmodel.DrinksListViewModel
+import com.example.drinkapp.ui.theme.purple_500
 
 /**
  * Created by pedrooliveira on 11/01/2023
@@ -24,13 +26,19 @@ import com.example.drinkapp.presentation.drinkslist.viewmodel.DrinksListViewMode
 fun DrinksListScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
     viewModel: DrinksListViewModel = hiltViewModel()
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = purple_500)
+    ) {
         if (viewModel.state.isLoading && viewModel.state.drinksList.isEmpty()) {
             LoadingIndicator(Modifier.fillMaxSize())
         } else {
             LazyVerticalGrid(
+                contentPadding = contentPadding,
                 cells = GridCells.Fixed(2),
             ) {
                 val itemsCount = viewModel.state.drinksList.size
