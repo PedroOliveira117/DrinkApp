@@ -49,10 +49,16 @@ fun DrinksListScreen(
                                 viewModel.onTriggerEvent(DrinksListEvent.NextPageEvent)
                             }
                         }
-                        DrinkListItem(
-                            navController = navController,
-                            drink = drinksList[index]
-                        )
+                        drinksList[index].let { drink ->
+                            DrinkListItem(
+                                navController = navController,
+                                drink = drink,
+                                isFavorite = viewModel.isDrinkFavorite(drink.id),
+                                onFavClick = {
+                                    viewModel.onTriggerEvent(DrinksListEvent.UpdateFavEvent(drink.id))
+                                }
+                            )
+                        }
                     }
                     // If is Loading Display loading at bottom for load more
                     if (isLoading) {

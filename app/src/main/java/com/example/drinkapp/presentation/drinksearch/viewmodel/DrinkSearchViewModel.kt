@@ -17,11 +17,20 @@ import javax.inject.Inject
  * All rights reserved GoodBarber
  */
 @HiltViewModel
-class DrinkSearchViewModel @Inject constructor(private val drinksRepository: IDrinksRepository) : ViewModel() {
+class DrinkSearchViewModel @Inject constructor(private val repository: IDrinksRepository) : ViewModel() {
 
     var state by mutableStateOf(DrinkSearchState())
     private var searchJob: Job? = null
     private val perPage = 24
+
+    init {
+        // Start Collecting Favorites
+        viewModelScope.launch {
+            repository.getFavList().collect { list ->
+                state = state.copy(favList = list.map { it.id }.toList())
+            }
+        }
+    }
 
     fun onTriggerEvent(event: DrinkSearchEvent) {
         when (event) {
@@ -31,7 +40,7 @@ class DrinkSearchViewModel @Inject constructor(private val drinksRepository: IDr
                     onTriggerEvent(DrinkSearchEvent.ClearSearchEvent)
                 } else {
                     // Each time new search request we cancel previous job
-                    state = DrinkSearchState(keyword = event.keyword, isLoading = true)
+                    state = DrinkSearchState(keyword = event.keyword, isLoading = true, favList = state.favList)
                     searchJob?.cancel()
                     searchJob = viewModelScope.launch {
                         // Delay to start making search request
@@ -49,14 +58,15 @@ class DrinkSearchViewModel @Inject constructor(private val drinksRepository: IDr
             }
             is DrinkSearchEvent.ClearSearchEvent -> {
                 searchJob?.cancel()
-                state = DrinkSearchState()
+                state = DrinkSearchState(favList = state.favList)
             }
+            is DrinkSearchEvent.UpdateFavEvent -> updateFavorites(id = event.id)
         }
     }
 
     private fun searchDrink(keyword: String, page: Int = 1) {
         viewModelScope.launch {
-            val response = drinksRepository.searchDrink(keyword = keyword, page = page, perPage = perPage)
+            val response = repository.searchDrink(keyword = keyword, page = page, perPage = perPage)
             response.data?.let { list ->
                 when {
                     list.isNotEmpty() -> {
@@ -73,4 +83,16 @@ class DrinkSearchViewModel @Inject constructor(private val drinksRepository: IDr
             }
         }
     }
+
+    private fun updateFavorites(id: String) {
+        viewModelScope.launch {
+            if (state.favList.contains(id)) {
+                repository.removeFav(id)
+            } else {
+                repository.insertFav(id)
+            }
+        }
+    }
+
+    fun isDrinkFavorite(id: String) = state.favList.contains(id)
 }

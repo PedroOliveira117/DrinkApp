@@ -2,10 +2,12 @@ package com.example.drinkapp.data.repository
 
 import com.example.drinkapp.common.Resource
 import com.example.drinkapp.data.local.DrinksDataBase
+import com.example.drinkapp.data.models.DrinkFavDto
 import com.example.drinkapp.data.models.toDrink
 import com.example.drinkapp.data.remote.DrinksApi
 import com.example.drinkapp.domain.models.Drink
 import com.example.drinkapp.domain.repository.IDrinksRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -52,4 +54,14 @@ class DrinksRepository @Inject constructor(private val api: DrinksApi, private v
         }
         return Resource.Success(data = response.map { it.toDrink() })
     }
+
+    override suspend fun insertFav(id: String) {
+        dataBase.drinkFavDao().insertFav(DrinkFavDto(id))
+    }
+
+    override suspend fun removeFav(id: String) {
+        dataBase.drinkFavDao().removeFav(DrinkFavDto(id))
+    }
+
+    override suspend fun getFavList(): Flow<List<DrinkFavDto>> =  dataBase.drinkFavDao().getFavList()
 }

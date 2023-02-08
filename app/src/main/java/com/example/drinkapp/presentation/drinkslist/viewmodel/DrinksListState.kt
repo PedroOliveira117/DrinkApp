@@ -8,6 +8,7 @@ import com.example.drinkapp.domain.models.Drink
  */
 data class DrinksListState(
     val drinksList: List<Drink> = emptyList(),
+    val favList: List<String> = emptyList(),
     val isLoading: Boolean = false,
     var page: Int = 1,
 )

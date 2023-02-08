@@ -5,6 +5,7 @@ package com.example.drinkapp.presentation.drinkslist.viewmodel
  * All rights reserved GoodBarber
  */
 sealed class DrinksListEvent {
-    object NewSearchEvent: DrinksListEvent()
+    object LoadDrinksEvent: DrinksListEvent()
     object NextPageEvent: DrinksListEvent()
+    data class UpdateFavEvent(val id: String): DrinksListEvent()
 }

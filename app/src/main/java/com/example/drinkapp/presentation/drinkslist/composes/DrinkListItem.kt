@@ -29,6 +29,7 @@ import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.drinkapp.common.calcDominantColor
+import com.example.drinkapp.common.extensions.noRippleClickable
 import com.example.drinkapp.common.navigation.NavigationUtils.navigateToDrinkDetail
 import com.example.drinkapp.domain.models.Drink
 import com.example.drinkapp.ui.theme.*
@@ -41,7 +42,9 @@ import com.example.drinkapp.ui.theme.*
 fun DrinkListItem(
     navController: NavController,
     drink: Drink,
-    modifier: Modifier = Modifier
+    isFavorite: Boolean,
+    onFavClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var dominantColor by remember {
         mutableStateOf(gray_300)
@@ -109,17 +112,24 @@ fun DrinkListItem(
                     .offset(y = ((-40).dp))
             )
 
+            val color = if (isFavorite) {
+                dominantColor
+            } else {
+                gray_300
+            }
             Icon(
                 imageVector = Icons.Default.Favorite,
-                tint = gray_300,
+                tint = color,
                 contentDescription = "Favorite Icon",
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .size(30.dp)
                     .offset((-5).dp, 10.dp)
-                    .background(color = dominantColor, shape = CircleShape)
+                    .background(color = dominantColor.copy(0.5f), shape = CircleShape)
                     .padding(5.dp)
-                    .clickable { },
+                    .noRippleClickable {
+                        onFavClick()
+                    }
             )
         }
     }

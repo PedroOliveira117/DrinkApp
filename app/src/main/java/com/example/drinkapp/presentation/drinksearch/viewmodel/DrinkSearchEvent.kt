@@ -8,4 +8,5 @@ sealed class DrinkSearchEvent {
     data class NewSearchEvent(val keyword: String) : DrinkSearchEvent()
     object NextPageEvent : DrinkSearchEvent()
     object ClearSearchEvent : DrinkSearchEvent()
+    data class UpdateFavEvent(val id: String): DrinkSearchEvent()
 }

@@ -22,13 +22,21 @@ class DrinksListViewModel @Inject constructor(private val repository: IDrinksRep
     private val perPage = 24
 
     init {
-        onTriggerEvent(DrinksListEvent.NewSearchEvent)
+        onTriggerEvent(DrinksListEvent.LoadDrinksEvent)
+
+        // Start Collecting Favorites
+        viewModelScope.launch {
+            repository.getFavList().collect { list ->
+                state = state.copy(favList = list.map { it.id }.toList())
+            }
+        }
     }
 
     fun onTriggerEvent(event: DrinksListEvent) {
         when (event) {
-            DrinksListEvent.NewSearchEvent -> getDrinks()
+            DrinksListEvent.LoadDrinksEvent -> getDrinks()
             DrinksListEvent.NextPageEvent -> getDrinks(state.page)
+            is DrinksListEvent.UpdateFavEvent -> updateFavorites(event.id)
         }
     }
 
@@ -50,4 +58,16 @@ class DrinksListViewModel @Inject constructor(private val repository: IDrinksRep
             }
         }
     }
+
+    private fun updateFavorites(id: String) {
+        viewModelScope.launch {
+            if (state.favList.contains(id)) {
+                repository.removeFav(id)
+            } else {
+                repository.insertFav(id)
+            }
+        }
+    }
+
+    fun isDrinkFavorite(id: String) = state.favList.contains(id)
 }

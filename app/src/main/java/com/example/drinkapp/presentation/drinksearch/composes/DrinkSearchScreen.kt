@@ -117,10 +117,16 @@ fun DrinkSearchScreen(
                                     viewModel.onTriggerEvent(DrinkSearchEvent.NextPageEvent)
                                 }
                             }
-                            DrinkSearchItem(
-                                navController = navController,
-                                drink = state.drinksList[index]
-                            )
+                            state.drinksList[index].let { drink ->
+                                DrinkSearchItem(
+                                    navController = navController,
+                                    drink = drink,
+                                    isFavorite = viewModel.isDrinkFavorite(drink.id),
+                                    onFavClick = {
+                                        viewModel.onTriggerEvent(DrinkSearchEvent.UpdateFavEvent(drink.id))
+                                    }
+                                )
+                            }
                         }
 
                         if (state.isLoading && state.page > 1) {
