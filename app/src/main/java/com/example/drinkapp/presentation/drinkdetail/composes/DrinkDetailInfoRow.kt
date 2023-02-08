@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -16,9 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.drinkapp.R
 import com.example.drinkapp.domain.models.Drink
-import com.example.drinkapp.ui.theme.gray_300
-import com.example.drinkapp.ui.theme.purple_700
-import com.example.drinkapp.ui.theme.yellow_500
+import com.example.drinkapp.ui.theme.*
 
 /**
  * Created by pedrooliveira on 18/01/2023
@@ -60,7 +59,7 @@ fun DetailInfoItem(
     Box(modifier = modifier
         .padding(10.dp)
         .shadow(5.dp, shape = RoundedCornerShape(15.dp))
-        .background(color = purple_700)) {
+        .background(color = gray_300)) {
         Column(
             modifier = Modifier
                 .padding(10.dp)
@@ -69,7 +68,7 @@ fun DetailInfoItem(
         ) {
             Icon(
                 painter = painterResource(id = iconResourceId),
-                tint = gray_300,
+                tint = Color.Black,
                 contentDescription = "Info Icon",
                 modifier = Modifier.size(28.dp)
             )
@@ -79,8 +78,9 @@ fun DetailInfoItem(
             Text(
                 text,
                 fontSize = 14.sp,
-                color = yellow_500,
-                fontWeight = FontWeight(700),
+                color = Color.Black,
+                fontFamily = Poppins,
+                fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

@@ -3,16 +3,18 @@ package com.example.drinkapp.presentation.drinksearch.composes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -26,8 +28,10 @@ import coil.compose.AsyncImage
 import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.example.drinkapp.common.calcDominantColor
 import com.example.drinkapp.common.navigation.NavigationUtils.navigateToDrinkDetail
 import com.example.drinkapp.domain.models.Drink
+import com.example.drinkapp.ui.theme.*
 
 /**
  * Created by pedrooliveira on 16/01/2023
@@ -39,15 +43,27 @@ fun DrinkSearchItem(
     drink: Drink,
     modifier: Modifier = Modifier
 ) {
+    var dominantColor by remember {
+        mutableStateOf(gray_300)
+    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .shadow(5.dp, shape = RoundedCornerShape(10.dp))
-            .background(color = Color.Gray)
-            .padding(10.dp)
+            .background(color = gray_300)
+            .drawWithCache {
+                onDrawBehind {
+                    drawCircle(
+                        dominantColor,
+                        center = Offset(x = 0f, y = 50f)
+                    )
+                }
+            }
             .clickable {
                 navController.navigateToDrinkDetail(drinkId = drink.id)
             }
+            .padding(10.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -59,13 +75,20 @@ fun DrinkSearchItem(
                     .diskCachePolicy(CachePolicy.ENABLED)
                     .memoryCachePolicy(CachePolicy.ENABLED)
                     .build(),
+                onSuccess = { state ->
+                    state.result.drawable.calcDominantColor { color ->
+                        dominantColor = color
+                    }
+                },
+                onError = {
+                    dominantColor = Color.Black
+                },
                 imageLoader = LocalContext.current.imageLoader,
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .aspectRatio(0.8f, matchHeightConstraintsFirst = true)
                     .weight(0.3f)
-                    .background(Color.Gray)
             )
             Spacer(Modifier.width(10.dp))
             Column(
@@ -79,8 +102,9 @@ fun DrinkSearchItem(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 20.sp,
-                    fontWeight = FontWeight(700),
-                    color = Color.White
+                    fontFamily = Poppins,
+                    fontWeight = FontWeight.Bold,
+                    color = dominantColor
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
@@ -88,8 +112,10 @@ fun DrinkSearchItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 14.sp,
+                    fontFamily = Poppins,
+                    fontWeight = FontWeight.Bold,
                     fontStyle = FontStyle.Italic,
-                    color = Color.White
+                    color = gray_600
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
@@ -97,20 +123,23 @@ fun DrinkSearchItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 14.sp,
-                    color = Color.White
+                    fontFamily = Poppins,
+                    fontWeight = FontWeight.Bold,
+                    color = gray_600
                 )
             }
         }
-        IconButton(
+
+        Icon(
+            imageVector = Icons.Default.Favorite,
+            tint = gray_300,
+            contentDescription = "Favorite Icon",
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .size(28.dp),
-            onClick = { /*TODO Add To Favorites*/ }) {
-            Icon(
-                imageVector = Icons.Default.FavoriteBorder,
-                tint = Color.White,
-                contentDescription = "Favorite Icon",
-            )
-        }
+                .size(28.dp)
+                .background(color = dominantColor, shape = CircleShape)
+                .padding(5.dp)
+                .clickable { },
+        )
     }
 }

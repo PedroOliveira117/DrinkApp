@@ -7,13 +7,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.drinkapp.domain.models.Drink
-import com.example.drinkapp.ui.theme.gray_300
-import com.example.drinkapp.ui.theme.purple_700
-import com.example.drinkapp.ui.theme.yellow_500
+import com.example.drinkapp.ui.theme.*
 
 /**
  * Created by pedrooliveira on 18/01/2023
@@ -33,25 +32,26 @@ fun DetailDescription(
             modifier = Modifier
                 .fillMaxWidth()
                 .shadow(5.dp, shape = RoundedCornerShape(10.dp))
-                .background(color = purple_700)
+                .background(color = gray_300)
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
                     "Description",
-                    fontSize = 22.sp,
-                    lineHeight = 28.sp,
-                    fontWeight = FontWeight(700),
-                    color = yellow_500
+                    fontSize = 20.sp,
+                    fontFamily = Poppins,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
 
                 Text(
                     drink.description,
-                    fontSize = 18.sp,
+                    fontSize = 14.sp,
                     lineHeight = 28.sp,
-                    fontWeight = FontWeight(500),
-                    color = gray_300,
+                    fontFamily = Poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    color = gray_600,
                 )
             }
         }
@@ -62,15 +62,15 @@ fun DetailDescription(
             modifier = Modifier
                 .fillMaxWidth()
                 .shadow(5.dp, shape = RoundedCornerShape(10.dp))
-                .background(color = purple_700)
+                .background(color = gray_300)
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
-                    "Matches well with",
-                    fontSize = 22.sp,
-                    lineHeight = 28.sp,
-                    fontWeight = FontWeight(700),
-                    color = yellow_500
+                    "Food matches",
+                    fontSize = 20.sp,
+                    fontFamily = Poppins,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
@@ -78,9 +78,10 @@ fun DetailDescription(
                 drink.foodMatches.forEach { foodMatch ->
                     Text(
                         foodMatch,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight(700),
-                        color = gray_300
+                        fontSize = 14.sp,
+                        fontFamily = Poppins,
+                        fontWeight = FontWeight.SemiBold,
+                        color = gray_600
                     )
                     Spacer(modifier = Modifier.height(5.dp))
                 }

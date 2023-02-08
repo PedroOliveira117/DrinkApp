@@ -12,18 +12,16 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,10 +30,9 @@ import coil.compose.AsyncImage
 import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.example.drinkapp.common.calcDominantColor
 import com.example.drinkapp.presentation.drinkdetail.viewmodel.DrinkDetailViewModel
-import com.example.drinkapp.ui.theme.gray_300
-import com.example.drinkapp.ui.theme.purple_500
-import com.example.drinkapp.ui.theme.purple_700
+import com.example.drinkapp.ui.theme.*
 
 /**
  * Created by pedrooliveira on 17/01/2023
@@ -48,94 +45,115 @@ fun DrinkDetailScreen(
     viewModel: DrinkDetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
+
+    var dominantColor by remember {
+        mutableStateOf(Color.White)
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(
-                brush = Brush.linearGradient(
-                    listOf(purple_500, purple_700)
-                )
-            )
+            .background(color = gray_200)
     ) {
         state.drink?.let { drink ->
-            Box(
+
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(bottomStart = 40.dp))
+                    .background(color = dominantColor)
                     .padding(20.dp)
+                    .statusBarsPadding()
             ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(drink.thumbUrl)
-                        .crossfade(true)
-                        .diskCachePolicy(CachePolicy.ENABLED)
-                        .memoryCachePolicy(CachePolicy.ENABLED)
-                        .build(),
-                    imageLoader = LocalContext.current.imageLoader,
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
+                Row(
                     modifier = Modifier
-                        .height(LocalConfiguration.current.screenHeightDp.dp * 0.4f)
-                        .align(Alignment.Center)
-                )
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        tint = Color.White,
+                        contentDescription = "Back Icon",
+                        modifier = Modifier
+                            .size(42.dp)
+                            .background(color = Color.Black.copy(alpha = 0.2f), shape = CircleShape)
+                            .padding(10.dp)
+                            .clickable {
+                                navController.popBackStack()
+                            },
+                    )
 
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    tint = Color.White,
-                    contentDescription = "Back Icon",
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder,
+                        tint = Color.White,
+                        contentDescription = "Favorite Icon",
+                        modifier = Modifier
+                            .size(42.dp)
+                            .background(color = Color.Black.copy(alpha = 0.2f), shape = CircleShape)
+                            .padding(10.dp)
+                            .clickable { },
+                    )
+                }
+
+                Row(
                     modifier = Modifier
-                        .size(38.dp)
-                        .align(Alignment.TopStart)
-                        .offset(x = (-5).dp, y = (-5).dp)
-                        .background(color = Color.Black.copy(alpha = 0.2f), shape = CircleShape)
-                        .padding(8.dp)
-                        .clickable {
-                            navController.popBackStack()
+                        .fillMaxWidth()
+                        .padding(start = 32.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(drink.thumbUrl)
+                            .crossfade(true)
+                            .diskCachePolicy(CachePolicy.ENABLED)
+                            .memoryCachePolicy(CachePolicy.ENABLED)
+                            .build(),
+                        onSuccess = { state ->
+                            state.result.drawable.calcDominantColor { color ->
+                                dominantColor = color
+                            }
                         },
-                )
+                        imageLoader = LocalContext.current.imageLoader,
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .height(LocalConfiguration.current.screenHeightDp.dp * 0.4f)
+                    )
 
-                Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    tint = Color.White,
-                    contentDescription = "Favorite Icon",
-                    modifier = Modifier
-                        .size(38.dp)
-                        .align(Alignment.TopEnd)
-                        .offset(x = 5.dp, y = (-5).dp)
-                        .background(color = Color.Black.copy(alpha = 0.2f), shape = CircleShape)
-                        .padding(8.dp)
-                        .clickable { },
-                )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column(
+                        modifier = Modifier.padding(start = 10.dp)
+                    ) {
+                        Text(
+                            text = drink.name,
+                            fontSize = 30.sp,
+                            fontFamily = Poppins,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 2,
+                            color = Color.White
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Text(
+                            drink.tag,
+                            fontSize = 20.sp,
+                            fontFamily = Poppins,
+                            fontWeight = FontWeight.Normal,
+                            fontStyle = FontStyle.Italic,
+                            color = Color.White
+                        )
+                    }
+
+                }
             }
 
             Box(
                 modifier = modifier
                     .fillMaxWidth()
-                    .shadow(2.dp, shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
             ) {
                 Column(modifier = Modifier.padding(10.dp)) {
-                    Text(
-                        text = drink.name,
-                        fontSize = 25.sp,
-                        fontWeight = FontWeight(700),
-                        textAlign = TextAlign.Center,
-                        color = Color.White,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(
-                        drink.tag,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight(700),
-                        fontStyle = FontStyle.Italic,
-                        textAlign = TextAlign.Center,
-                        color = gray_300,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
 
                     DetailInfoRow(drink = drink)
 

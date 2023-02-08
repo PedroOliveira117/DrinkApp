@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -23,9 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.drinkapp.common.navigation.NavigationUtils.DRINKS_LIST_SCREEN
 import com.example.drinkapp.common.navigation.NavigationUtils.FAVORITE_DRINKS_SCREEN
 import com.example.drinkapp.common.navigation.NavigationUtils.SEARCH_DRINKS_LIST_SCREEN
-import com.example.drinkapp.ui.theme.gray_300
-import com.example.drinkapp.ui.theme.purple_600
-import com.example.drinkapp.ui.theme.yellow_500
+import com.example.drinkapp.ui.theme.*
 
 /**
  * Created by pedrooliveira on 11/01/2023
@@ -72,12 +71,12 @@ fun BottomBar(
     BottomAppBar(
         backgroundColor = Color.Transparent,
         elevation = 0.dp,
-        contentPadding = PaddingValues(bottom = 10.dp, start = 10.dp, end = 10.dp),
+        contentPadding = PaddingValues(bottom = 10.dp, start = 30.dp, end = 30.dp),
     ) {
         BottomNavigation(
             modifier = modifier
                 .clip(CircleShape),
-            backgroundColor = purple_600
+            backgroundColor = gray_400
         ) {
             screens.forEach { screen ->
                 AddItem(
@@ -98,7 +97,11 @@ fun RowScope.AddItem(
 ) {
     BottomNavigationItem(
         label = {
-            Text(text = screen.title)
+            Text(
+                text = screen.title,
+                fontFamily = Poppins,
+                fontWeight = FontWeight.Bold
+            )
         },
         icon = {
             Icon(
@@ -109,8 +112,8 @@ fun RowScope.AddItem(
         selected = currentDestination?.hierarchy?.any {
             it.route == screen.route
         } == true,
-        selectedContentColor = yellow_500,
-        unselectedContentColor = gray_300,
+        selectedContentColor = Color.Black,
+        unselectedContentColor = gray_500,
         onClick = {
             if (currentDestination?.hierarchy?.any {
                     it.route == screen.route

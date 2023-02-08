@@ -1,11 +1,13 @@
 package com.example.drinkapp.presentation.drinksearch.composes
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -22,6 +24,7 @@ import androidx.navigation.NavController
 import com.example.drinkapp.common.composes.LoadingIndicator
 import com.example.drinkapp.presentation.drinksearch.viewmodel.DrinkSearchEvent
 import com.example.drinkapp.presentation.drinksearch.viewmodel.DrinkSearchViewModel
+import com.example.drinkapp.ui.theme.*
 
 /**
  * Created by pedrooliveira on 16/01/2023
@@ -31,12 +34,16 @@ import com.example.drinkapp.presentation.drinksearch.viewmodel.DrinkSearchViewMo
 fun DrinkSearchScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
     viewModel: DrinkSearchViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
 
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = gray_200)
+            .statusBarsPadding()
     ) {
         Column(
             modifier = Modifier
@@ -52,7 +59,11 @@ fun DrinkSearchScreen(
                     viewModel.onTriggerEvent(DrinkSearchEvent.NewSearchEvent(keyword = it))
                 },
                 placeholder = {
-                    Text("Search your beer")
+                    Text(
+                        "Search your beer",
+                        fontFamily = Poppins,
+                        fontWeight = FontWeight.Normal
+                    )
                 },
                 leadingIcon = {
                     Icon(
@@ -73,6 +84,11 @@ fun DrinkSearchScreen(
                         )
                     }
                 },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Black,
+                    cursorColor = Color.Black,
+                    backgroundColor = gray_400
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -91,7 +107,7 @@ fun DrinkSearchScreen(
                 else -> {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(10.dp),
-                        contentPadding = PaddingValues(bottom = 10.dp)
+                        contentPadding = PaddingValues(bottom = contentPadding.calculateBottomPadding() + 10.dp)
                     ) {
                         items(state.drinksList.size) { index ->
                             // When reaching last Item Trigger next Page Event
@@ -140,7 +156,8 @@ fun SearchMessageView(
         Text(
             message,
             fontSize = 20.sp,
-            fontWeight = FontWeight(700),
+            fontFamily = Poppins,
+            fontWeight = FontWeight.Bold,
             color = Color.Black
         )
     }
