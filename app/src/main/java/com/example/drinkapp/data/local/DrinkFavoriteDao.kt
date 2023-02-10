@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.drinkapp.data.models.DrinkFavDto
+import com.example.drinkapp.data.models.DrinkFavoriteDto
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,14 +13,14 @@ import kotlinx.coroutines.flow.Flow
  * All rights reserved GoodBarber
  */
 @Dao
-interface DrinkFavDao {
+interface DrinkFavoriteDao {
 
     @Query("SELECT * FROM drink_fav_database")
-    fun getFavList(): Flow<List<DrinkFavDto>>
+    fun getFavoriteList(): Flow<List<DrinkFavoriteDto>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFav(drink: DrinkFavDto)
+    suspend fun insertFavorite(drink: DrinkFavoriteDto)
 
     @Delete
-    suspend fun removeFav(drink: DrinkFavDto)
+    suspend fun removeFavorite(drink: DrinkFavoriteDto)
 }

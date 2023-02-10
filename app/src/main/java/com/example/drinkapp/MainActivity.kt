@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.drinkapp.common.navigation.NavigationUtils.DRINK_DETAIL_SCREEN
 import com.example.drinkapp.presentation.drinkdetail.composes.DrinkDetailScreen
+import com.example.drinkapp.presentation.drinkfavorites.composes.DrinkFavoriteScreen
 import com.example.drinkapp.presentation.drinksearch.composes.DrinkSearchScreen
 import com.example.drinkapp.presentation.drinkslist.bottomnavigation.BottomBar
 import com.example.drinkapp.presentation.drinkslist.bottomnavigation.BottomBarScreen
@@ -78,12 +79,15 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        composable(route = BottomBarScreen.Favorites.route) {
-                            DrinkSearchScreen(navController)
-                        }
-
                         composable(route = BottomBarScreen.Search.route) {
                             DrinkSearchScreen(
+                                contentPadding = padding,
+                                navController = navController
+                            )
+                        }
+
+                        composable(route = BottomBarScreen.Favorites.route) {
+                            DrinkFavoriteScreen(
                                 contentPadding = padding,
                                 navController = navController
                             )

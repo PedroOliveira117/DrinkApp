@@ -26,8 +26,8 @@ class DrinksListViewModel @Inject constructor(private val repository: IDrinksRep
 
         // Start Collecting Favorites
         viewModelScope.launch {
-            repository.getFavList().collect { list ->
-                state = state.copy(favList = list.map { it.id }.toList())
+            repository.getFavoriteDrinks().collect { list ->
+                state = state.copy(favList = list.map { it.id })
             }
         }
     }
@@ -62,9 +62,9 @@ class DrinksListViewModel @Inject constructor(private val repository: IDrinksRep
     private fun updateFavorites(id: String) {
         viewModelScope.launch {
             if (state.favList.contains(id)) {
-                repository.removeFav(id)
+                repository.removeFavorite(id)
             } else {
-                repository.insertFav(id)
+                repository.insertFavorite(id)
             }
         }
     }
