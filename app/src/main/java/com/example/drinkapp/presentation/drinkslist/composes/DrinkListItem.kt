@@ -1,7 +1,6 @@
 package com.example.drinkapp.presentation.drinkslist.composes
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -57,7 +56,7 @@ fun DrinkListItem(
             Box(
                 modifier = modifier
                     .fillMaxWidth()
-                    .clickable {
+                    .noRippleClickable {
                         navController.navigateToDrinkDetail(drinkId = drink.id)
                     }
                     .shadow(5.dp, RoundedCornerShape(20.dp))

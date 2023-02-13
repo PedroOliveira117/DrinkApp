@@ -1,7 +1,6 @@
 package com.example.drinkapp.presentation.drinksearch.composes
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
@@ -17,11 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.drinkapp.common.composes.DrinkListItem
 import com.example.drinkapp.common.composes.LoadingIndicator
+import com.example.drinkapp.common.extensions.noRippleClickable
 import com.example.drinkapp.presentation.drinksearch.viewmodel.DrinkSearchEvent
 import com.example.drinkapp.presentation.drinksearch.viewmodel.DrinkSearchViewModel
 import com.example.drinkapp.ui.theme.*
@@ -78,7 +80,7 @@ fun DrinkSearchScreen(
                             imageVector = Icons.Default.Clear,
                             tint = Color.Black,
                             contentDescription = "Clear Icon",
-                            modifier = Modifier.clickable {
+                            modifier = Modifier.noRippleClickable {
                                 viewModel.onTriggerEvent(DrinkSearchEvent.ClearSearchEvent)
                             }
                         )
@@ -118,7 +120,7 @@ fun DrinkSearchScreen(
                                 }
                             }
                             state.drinksList[index].let { drink ->
-                                DrinkSearchItem(
+                                DrinkListItem(
                                     navController = navController,
                                     drink = drink,
                                     isFavorite = viewModel.isDrinkFavorite(drink.id),
@@ -164,7 +166,9 @@ fun SearchMessageView(
             fontSize = 20.sp,
             fontFamily = Poppins,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 10.dp)
         )
     }
 }

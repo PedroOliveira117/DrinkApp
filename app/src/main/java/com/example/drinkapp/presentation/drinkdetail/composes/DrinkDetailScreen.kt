@@ -1,7 +1,6 @@
 package com.example.drinkapp.presentation.drinkdetail.composes
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -11,7 +10,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +30,9 @@ import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.drinkapp.common.calcDominantColor
+import com.example.drinkapp.common.composes.LoadingIndicator
+import com.example.drinkapp.common.extensions.noRippleClickable
+import com.example.drinkapp.presentation.drinkdetail.viewmodel.DrinkDetailEvent
 import com.example.drinkapp.presentation.drinkdetail.viewmodel.DrinkDetailViewModel
 import com.example.drinkapp.ui.theme.*
 
@@ -50,116 +52,126 @@ fun DrinkDetailScreen(
         mutableStateOf(Color.White)
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .background(color = gray_200)
-    ) {
-        state.drink?.let { drink ->
+    val favoriteColor = if (state.isFavorite) {
+        Color.White
+    } else {
+        dominantColor
+    }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(shape = RoundedCornerShape(bottomStart = 40.dp))
-                    .background(color = dominantColor)
-                    .padding(20.dp)
-                    .statusBarsPadding()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        tint = Color.White,
-                        contentDescription = "Back Icon",
-                        modifier = Modifier
-                            .size(42.dp)
-                            .background(color = Color.Black.copy(alpha = 0.2f), shape = CircleShape)
-                            .padding(10.dp)
-                            .clickable {
-                                navController.popBackStack()
-                            },
-                    )
+    if (state.isLoading) {
+        LoadingIndicator(Modifier.fillMaxSize())
+    } else {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .background(color = gray_200)
+        ) {
+            state.drink?.let { drink ->
 
-                    Icon(
-                        imageVector = Icons.Default.FavoriteBorder,
-                        tint = Color.White,
-                        contentDescription = "Favorite Icon",
-                        modifier = Modifier
-                            .size(42.dp)
-                            .background(color = Color.Black.copy(alpha = 0.2f), shape = CircleShape)
-                            .padding(10.dp)
-                            .clickable { },
-                    )
-                }
-
-                Row(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 32.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .clip(shape = RoundedCornerShape(bottomStart = 40.dp))
+                        .background(color = dominantColor)
+                        .padding(20.dp)
+                        .statusBarsPadding()
                 ) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(drink.thumbUrl)
-                            .crossfade(true)
-                            .diskCachePolicy(CachePolicy.ENABLED)
-                            .memoryCachePolicy(CachePolicy.ENABLED)
-                            .build(),
-                        onSuccess = { state ->
-                            state.result.drawable.calcDominantColor { color ->
-                                dominantColor = color
-                            }
-                        },
-                        imageLoader = LocalContext.current.imageLoader,
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
+                    Row(
                         modifier = Modifier
-                            .height(LocalConfiguration.current.screenHeightDp.dp * 0.4f)
-                    )
-
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Column(
-                        modifier = Modifier.padding(start = 10.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(
-                            text = drink.name,
-                            fontSize = 30.sp,
-                            fontFamily = Poppins,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 2,
-                            color = Color.White
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            tint = Color.White,
+                            contentDescription = "Back Icon",
+                            modifier = Modifier
+                                .size(42.dp)
+                                .background(color = Color.Black.copy(alpha = 0.2f), shape = CircleShape)
+                                .padding(10.dp)
+                                .noRippleClickable {
+                                    navController.popBackStack()
+                                },
                         )
 
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        Text(
-                            drink.tag,
-                            fontSize = 20.sp,
-                            fontFamily = Poppins,
-                            fontWeight = FontWeight.Normal,
-                            fontStyle = FontStyle.Italic,
-                            color = Color.White
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            tint = favoriteColor,
+                            contentDescription = "Favorite Icon",
+                            modifier = Modifier
+                                .size(42.dp)
+                                .background(color = Color.Black.copy(alpha = 0.2f), shape = CircleShape)
+                                .padding(10.dp)
+                                .noRippleClickable {
+                                    viewModel.onTriggerEvent(DrinkDetailEvent.UpdateFavoriteEvent)
+                                },
                         )
                     }
 
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 32.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(drink.thumbUrl)
+                                .crossfade(true)
+                                .diskCachePolicy(CachePolicy.ENABLED)
+                                .memoryCachePolicy(CachePolicy.ENABLED)
+                                .build(),
+                            onSuccess = { state ->
+                                state.result.drawable.calcDominantColor { color ->
+                                    dominantColor = color
+                                }
+                            },
+                            imageLoader = LocalContext.current.imageLoader,
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier
+                                .height(LocalConfiguration.current.screenHeightDp.dp * 0.4f)
+                        )
+
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column(
+                            modifier = Modifier.padding(start = 10.dp)
+                        ) {
+                            Text(
+                                text = drink.name,
+                                fontSize = 30.sp,
+                                fontFamily = Poppins,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            Text(
+                                drink.tag,
+                                fontSize = 20.sp,
+                                fontFamily = Poppins,
+                                fontWeight = FontWeight.Normal,
+                                fontStyle = FontStyle.Italic,
+                                color = Color.White
+                            )
+                        }
+
+                    }
                 }
-            }
 
-            Box(
-                modifier = modifier
-                    .fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(10.dp)) {
+                Box(
+                    modifier = modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(10.dp)) {
 
-                    DetailInfoRow(drink = drink)
+                        DetailInfoRow(drink = drink)
 
-                    DetailDescription(drink = drink)
+                        DetailDescription(drink = drink)
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
                 }
             }
         }

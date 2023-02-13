@@ -1,7 +1,6 @@
-package com.example.drinkapp.presentation.drinksearch.composes
+package com.example.drinkapp.common.composes
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,7 +38,7 @@ import com.example.drinkapp.ui.theme.*
  * All rights reserved GoodBarber
  */
 @Composable
-fun DrinkSearchItem(
+fun DrinkListItem(
     navController: NavController,
     drink: Drink,
     isFavorite: Boolean,
@@ -63,7 +62,7 @@ fun DrinkSearchItem(
                     )
                 }
             }
-            .clickable {
+            .noRippleClickable {
                 navController.navigateToDrinkDetail(drinkId = drink.id)
             }
             .padding(10.dp)

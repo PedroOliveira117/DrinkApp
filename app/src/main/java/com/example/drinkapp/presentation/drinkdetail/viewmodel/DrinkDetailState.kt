@@ -8,4 +8,6 @@ import com.example.drinkapp.domain.models.Drink
  */
 data class DrinkDetailState(
     val drink: Drink? = null,
+    val isFavorite: Boolean = false,
+    val isLoading: Boolean = false
 )
