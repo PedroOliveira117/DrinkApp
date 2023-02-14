@@ -13,6 +13,7 @@ Drink App using https://punkapi.com/documentation/v2
 
 # Tech Stack
 - Kotlin
+- Jetpack Compose, toolkit used for building native UI
 - Coroutines for asynchronous
 - Dagger Hilt for depencency injection
 - Retrofit used for building REST API clients
