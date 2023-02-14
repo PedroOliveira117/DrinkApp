@@ -1,6 +1,9 @@
 package com.example.drinkapp.di
 
+import android.app.Application
+import androidx.room.Room
 import com.example.drinkapp.common.ApiConstants
+import com.example.drinkapp.data.local.DrinksDataBase
 import com.example.drinkapp.data.remote.DrinksApi
 import dagger.Module
 import dagger.Provides
@@ -28,4 +31,11 @@ object AppModule {
             .build()
             .create(DrinksApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideDrinksDataBase(drinkApplication: Application) = Room
+        .databaseBuilder(drinkApplication, DrinksDataBase::class.java, "drink_database").
+        fallbackToDestructiveMigration()
+        .build()
 }

@@ -2,7 +2,8 @@ package com.example.drinkapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val gray_200 = Color(0xFFF2E4DE)
+val gray_300 = Color(0xFFf2e0d9)
+val gray_400 = Color(0xFFecd1c6)
+val gray_500 = Color(0xFFBCB4C3)
+val gray_600 = Color(0xFFa69cb0)
