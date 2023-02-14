@@ -15,7 +15,8 @@ Drink App using https://punkapi.com/documentation/v2
 - Kotlin
 - Coroutines for asynchronous
 - Dagger Hilt for depencency injection
-- Retrofit
-- Coil
+- Retrofit used for building REST API clients
+- Coil for image loading and caching
 - Room for cache
+- Palette for extracting prominent colors from images
 - Clean Architecutre with MVI Architecture
